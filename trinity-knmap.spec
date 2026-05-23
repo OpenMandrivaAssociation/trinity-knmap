@@ -1,10 +1,6 @@
 %bcond clang 1
 
 # TDE variables
-%if "%{?tde_version}" == ""
-%define tde_version 14.1.5
-%endif
-
 %define tde_pkg knmap
 %define tde_prefix /opt/trinity
 
@@ -14,14 +10,14 @@
 %define _disable_rebuild_configure 1
 
 # fixes error: Empty %files file …/debugsourcefiles.list
-%define _debugsource_template %{nil}
+%undefine _debugsource_template
 
 %define tarball_name %{tde_pkg}-trinity
 
 
 Name:		trinity-%{tde_pkg}
-Version:	2.1
-Release:	%{?tde_version:%{tde_version}_}3
+Version:	14.1.6
+Release:	1
 Summary:	An NMAP frontend for TDE
 Group:		Applications/Internet
 URL:		http://sourceforge.net/projects/knmap/
@@ -29,7 +25,7 @@ URL:		http://sourceforge.net/projects/knmap/
 License:	GPLv2+
 
 
-Source0:		https://mirror.ppa.trinitydesktop.org/trinity/releases/R%{tde_version}/main/applications/internet/%{tarball_name}-%{tde_version}.tar.xz
+Source0:		https://mirror.ppa.trinitydesktop.org/trinity/releases/R%{version}/main/applications/internet/%{tarball_name}-%{version}.tar.xz
 
 BuildSystem:    cmake
 
@@ -40,12 +36,13 @@ BuildOption:    -DWITH_ALL_OPTIONS=ON -DBUILD_ALL=ON
 BuildOption:    -DBUILD_DOC=ON -DBUILD_TRANSLATIONS=ON
 BuildOption:    -DWITH_GCC_VISIBILITY=%{!?with_clang:ON}%{?with_clang:OFF}
 
-BuildRequires:	trinity-tdelibs-devel >= %{tde_version}
-BuildRequires:	trinity-tdebase-devel >= %{tde_version}
+BuildRequires:	trinity-tdelibs-devel >= %{version}
+BuildRequires:	trinity-tdebase-devel >= %{version}
+BuildRequires:	trinity-tde-cmake >= %{version}
+
 BuildRequires:	desktop-file-utils
 BuildRequires:	gettext
 
-BuildRequires:	trinity-tde-cmake >= %{tde_version}
 
 %{!?with_clang:BuildRequires:	gcc-c++}
 
